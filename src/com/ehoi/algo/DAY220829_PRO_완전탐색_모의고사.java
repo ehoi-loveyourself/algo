@@ -2,7 +2,7 @@ package com.ehoi.algo;
 
 import java.util.*;
 
-public class DAY220929_PRO_완전탐색_모의고사 {
+public class DAY220829_PRO_완전탐색_모의고사 {
     public int[] solution(int[] answers) {
         int[] stu1 = {1, 2, 3, 4, 5};
         int[] stu2 = {2, 1, 2, 3, 2, 4, 2, 5};
