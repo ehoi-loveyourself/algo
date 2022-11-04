@@ -3,24 +3,24 @@ package com.ehoi.algo;
 import java.io.*;
 import java.util.*;
 
-class Node implements Comparable<Node> {
+class Node2 implements Comparable<Node2> {
     int end;
     int weight;
 
-    public Node(int end, int weight) {
+    public Node2(int end, int weight) {
         this.end = end;
         this.weight = weight;
     }
 
     @Override
-    public int compareTo(Node o) {
+    public int compareTo(Node2 o) {
         return weight - o.weight; // 음수여야 앞에 배치
     }
 }
 
 public class DAY221102_BOJ1753_G4_최단경로 {
     static int V, E;
-    static List<Node>[] list;
+    static List<Node2>[] list;
 
     static int[] dist;
     static boolean[] visited;
@@ -53,7 +53,7 @@ public class DAY221102_BOJ1753_G4_최단경로 {
             int e = Integer.parseInt(st.nextToken());
             int w = Integer.parseInt(st.nextToken());
 
-            list[s].add(new Node(e, w));
+            list[s].add(new Node2(e, w));
         }
 
         dijkstra(start);
@@ -75,12 +75,12 @@ public class DAY221102_BOJ1753_G4_최단경로 {
         dist[start] = 0;
 
         // 2. 우선순위 큐
-        PriorityQueue<Node> q = new PriorityQueue<>();
+        PriorityQueue<Node2> q = new PriorityQueue<>();
         // 시작 노드에서 시작 노드로 가는 최단 거리는 0이다 로 세팅하고 시작!
-        q.add(new Node(start, 0));
+        q.add(new Node2(start, 0));
 
         while (!q.isEmpty()) {
-            Node node = q.poll(); // weight 가 제일 작은 친구부터 나옴
+            Node2 node = q.poll(); // weight 가 제일 작은 친구부터 나옴
             int curr = node.end;
 
             // 방문했는지 체크
@@ -88,11 +88,11 @@ public class DAY221102_BOJ1753_G4_최단경로 {
             visited[curr] = true;
 
             // curr이 시작점, n.end가 도착점
-            for (Node n: list[curr]) {
+            for (Node2 n: list[curr]) {
                 // 그래서 n.end의 거리가 curr의 거리 + n.weight 보다 크다면 갱신
                 if (dist[n.end] > dist[curr] + n.weight) {
                     dist[n.end] = dist[curr] + n.weight;
-                    q.add(new Node(n.end, dist[n.end]));
+                    q.add(new Node2(n.end, dist[n.end]));
                 }
             }
         }
