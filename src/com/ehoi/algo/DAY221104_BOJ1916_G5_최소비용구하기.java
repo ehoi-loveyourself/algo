@@ -3,17 +3,17 @@ package com.ehoi.algo;
 import java.io.*;
 import java.util.*;
 
-class Node implements Comparable<Node>{
+class Node3 implements Comparable<Node3>{
     int end;
     int weight;
 
-    public Node(int end, int weight) {
+    public Node3(int end, int weight) {
         this.end = end;
         this.weight = weight;
     }
 
     @Override
-    public int compareTo(Node node) {
+    public int compareTo(Node3 node) {
         return this.weight - node.weight;
     }
 }
