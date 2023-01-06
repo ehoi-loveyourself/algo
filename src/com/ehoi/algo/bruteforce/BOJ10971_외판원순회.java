@@ -30,11 +30,11 @@ public class BOJ10971_외판원순회 {
 
         // 포문 돌면서 i를 출발시킬 건데, static 변수에 i 저장
         for (int i = 0; i < n; i++) {
-            visited = new boolean[n]; // 실수 : 출발지를 달리 할때마다 매번 새로 초기화되어야 한다.
+            visited = new boolean[n]; // 2번 실수 : 출발지를 달리 할때마다 매번 새로 초기화되어야 한다.
             start = i;
             visited[i] = true;
 //            recur(i, 0, 0);
-            recur(i, 1, 0); // 실수 : cnt를 1로 했어야 했다. 이미 여기서 출발하면서 1군데 들렸으니까
+            recur(i, 1, 0); // 3번 실수 : cnt를 1로 했어야 했다. 이미 여기서 출발하면서 1군데 들렸으니까
         }
         // => 근데 중요한 건 꼭 출발지를 모두 다 돌 필요가 없다는 것
         // 1 - 2 - 3 - 4가 정답이라면 2-3-4-1, 3-4-1-2. 4-1-2-3 모두 같은 결과일테니까!
@@ -52,7 +52,7 @@ public class BOJ10971_외판원순회 {
         // 정답과 cost 최솟값 비교
         if (cnt == n && map[curr][start] != 0) {
 //            ans = Math.min(ans, cost);
-            ans = Math.min(ans, cost + map[curr][start]); // 실수 : 마지막 도시에서 출발한 도시로 간다면 그 비용까지 더했어야 했다!
+            ans = Math.min(ans, cost + map[curr][start]); // 4번 실수 : 마지막 도시에서 출발한 도시로 간다면 그 비용까지 더했어야 했다!
             return;
         }
 
@@ -64,7 +64,7 @@ public class BOJ10971_외판원순회 {
             // 갈수 있따면 재귀 던지기
             if (visited[to]) continue;
             if (map[curr][to] == 0) continue;
-            visited[to] = true; // 실수 : 방문처리를 하지 않았다
+            visited[to] = true; // 1번 실수 : 방문처리를 하지 않았다
             recur(to, cnt + 1, cost + map[curr][to]);
             visited[to] = false;
         }
