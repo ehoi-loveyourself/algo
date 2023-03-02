@@ -1,4 +1,4 @@
-package com.ehoi.algo;
+package com.ehoi.algo.unionfind;
 
 import java.io.BufferedReader;
 import java.io.IOException;
