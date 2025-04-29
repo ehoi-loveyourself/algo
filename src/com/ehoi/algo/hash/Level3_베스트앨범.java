@@ -4,47 +4,74 @@ import java.util.*;
 
 public class Level3_베스트앨범 {
     public int[] solution(String[] genres, int[] plays) {
-// 2. 장르별로 음악을 묶기
+        // 1. 장르, 재생횟수, id를 묶어서 하나의 Music으로 관리하자. 그리고 key는 장르, value는 음악 리스트
         Map<String, List<Music>> genreMap = new HashMap<>();
         for (int i = 0; i < genres.length; i++) {
-            // 음악을 만들어서
             String genre = genres[i];
+
             Music music = new Music(genre, plays[i], i);
 
-            // 장르별 음악 리스트에 넣기
             if (genreMap.get(genre) == null) {
-                genreMap.put(genre, List.of(music));
+                List<Music> list = new ArrayList<>();
+                list.add(music);
+                genreMap.put(genre, list);
+
             } else {
                 genreMap.get(genre).add(music);
             }
         }
 
-        // 3. 재생횟수별로 장르를 관리할 맵 만들기
+        // 2. 이제 장르별로 재생 횟수를 누적시켜야해
         Map<String, Integer> playCntByGenre = new HashMap<>();
-        for (String genre : genreMap.keySet()) {
-            List<Music> musicList = genreMap.get(genre);
-
-            int sum = 0;
-            for (Music music : musicList) {
-                sum += music.getPlayCnt();
+        for (Map.Entry<String, List<Music>> entry : genreMap.entrySet()) {
+            int total = 0;
+            for (Music music : entry.getValue()) {
+                total += music.getPlayCnt();
             }
 
-            playCntByGenre.put(genre, sum);
+            playCntByGenre.put(entry.getKey(), total);
         }
 
-        // 4. 재생이 가장 많이 된 장르부터 정렬하기
-        List<String> genreList = new ArrayList<>(genreMap.keySet());
-        genreList.sort((a, b) -> playCntByGenre.get(b) - playCntByGenre.get(a));
+        // 3. playCntByGenre 를 재생횟수가 높은 순으로 정렬시키자
+        List<String> sortedGenre = new ArrayList<>(playCntByGenre.keySet());
+        Collections.sort(sortedGenre, (a, b) -> playCntByGenre.get(b) - playCntByGenre.get(a));
 
-        int[] answer = {};
-        return answer;
+        // 4. 높은 재생순으로 장르가 정렬됨. 순서대로 돌면서 음악을 두개씩 뽑자
+        List<Integer> result = new ArrayList<>();
+        for (String genre : sortedGenre) {
+            List<Music> musicList = genreMap.get(genre);
+            Collections.sort(musicList); // 음악 정렬부터 하고
+
+            int cnt = 0;
+            for (Music music : musicList) {
+                if (cnt == 2) break;
+                result.add(music.getId());
+
+                cnt++;
+            }
+        }
+
+        // 5. 리턴 형태가 int[] 이므로 여기에 담자
+        int[] ans = new int[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            ans[i] = result.get(i);
+        }
+
+        return ans;
     }
 
-    // 1. Music 이라는 클래스로 장르, 재생횟수, 고유번호를 한꺼번에 관리
-    class Music implements Comparable<Music> {
+    public class Music implements Comparable<Music> {
         private String genre;
         private int playCnt;
         private int id;
+
+        public int getPlayCnt() {
+            return this.playCnt;
+        }
+
+        public int getId() {
+            return this.id;
+        }
 
         public Music(String genre, int playCnt, int id) {
             this.genre = genre;
@@ -52,16 +79,12 @@ public class Level3_베스트앨범 {
             this.id = id;
         }
 
-        public int getPlayCnt() {
-            return this.playCnt;
-        }
-
         @Override
         public int compareTo(Music other) {
             if (this.playCnt == other.playCnt) {
-                return this.id - other.id; // 고유번호가 낮은 순
+                return this.id - other.id;
             }
-            return other.playCnt - this.playCnt; // 재생 횟수가 높은 순
+            return other.playCnt - this.playCnt;
         }
     }
 }
